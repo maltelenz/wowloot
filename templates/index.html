@@ -1,0 +1,9 @@
+<h1>WhoOwsWhom Loot</h1>
+<p>
+  {% if error_message %}{{ error_message }}{% endif %}
+  Enter a name for your calculation:
+  <form action="{% url home %}" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+  </form>
+</p>

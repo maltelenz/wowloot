@@ -1,0 +1,30 @@
+<h2>Calculation {{ calculation.name }}</h2>
+<table>
+  <tr>
+    <td>Paying person</td>
+    <td>Amount</td>
+    {% for benefactor in calculation.benefactors %}
+    <td>{{ benefactor.name }}</td>
+    {% endfor %}
+  </tr>
+  {% for expense in calculation.expense_set.all %}
+  <tr>
+    <td>{{ expense.person.name }}</td>
+    <td>{{ expense.amount }} {{ expense.currency.name }}</td>
+    {% for benefactor in calculation.benefactors %}
+    <td>{% if benefactor in expense.benefactors.all %}x{% else %}-{% endif %}</td>
+    {% endfor %}
+  </tr>
+  {% endfor %}
+  </table>
+  <form action="{% url calculation calculation.id calculation.hashtag %}" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="save">
+  </form>
+
+  {% for key, value in owing.items %}
+  <p>
+    {{ key|first }} ows {{ key|last }} {{value}}
+  </p>
+  {% endfor %}
