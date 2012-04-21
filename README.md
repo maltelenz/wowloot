@@ -1,5 +1,6 @@
 wowloot
 =======
+Django project to figure out Who Ows Whom how much money.
 
 Install instructions:
 1. Copy settings-template.py to settings.py.
