@@ -74,7 +74,7 @@
 	(Created {{ calculation.creation_date }})
       </td>
       <td>
-	<a href="{% url calculation_delete calculation.id calculation.hashtag %}">Delete</a>
+	<a href="{% url calculation_delete calculation.id calculation.hashtag %}"><img src="{{STATIC_URL}}images/cross.png" alt="Delete" /></a>
       </td>
     </tr>
     {% endfor %}
