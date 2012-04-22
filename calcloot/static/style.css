@@ -1,0 +1,125 @@
+html {
+    padding: 0px;
+    margin: 0px;
+}
+
+body {
+    padding: 0px;
+    margin: 0px;
+    background-color: #CCC;
+}
+
+
+div.firstpagemaincontent {
+    width: 450px;
+    padding: 20px 55px 50px 20px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 200px;
+    background-color: #6bb7f1;
+    border: 1px solid #2e37e8;
+    -moz-box-shadow: 0px 0px 5px #888;
+    -webkit-box-shadow: 0px 0px 5px #888;
+    box-shadow: 0px 0px 5px #888;
+    font-family: verdana;
+    font-size: 13px;
+}
+
+h1.firstpage {
+    color: #000;
+    margin: 0px;
+    font-family: verdana;
+}
+
+div.firstpagetext {
+    padding: 30px 10px 10px 50px;
+}
+
+.inputfirstpage {
+    border: 3px double #2e37e8;
+    background-color: #b4deff;
+    font-size: 20px;
+    padding: 5px;
+    margin-left: 50px;
+    font-weight: bold;
+    -moz-box-shadow: 0px 0px 2px #888;
+    -webkit-box-shadow: 0px 0px 2px #888;
+    box-shadow: 0px 0px 2px #888;
+}
+
+.watermarked {
+    color: #999;
+}
+
+.firstpagesubmit {
+    font-size: 20px;
+    padding: 7px 15px 7px 15px;
+    font-weight: bold;
+    font-color: #236a16;
+    border: 1px solid #2e37e8;
+    background-color: #DDD;
+    border-radius: 2px; 
+    -moz-border-radius: 2px; 
+    -webkit-border-radius: 2px; 
+    text-shadow: 1px 1px 0px #FFF;
+    -moz-box-shadow: 0px 0px 2px #888;
+    -webkit-box-shadow: 0px 0px 2px #888;
+    box-shadow: 0px 0px 2px #888;
+}
+
+table.previouscalculations {
+    padding: 5px;
+    margin-left: 50px;
+    border-collapse: collapse;
+}
+
+table.previouscalculations tr td {
+    font-size: 14px;
+    font-family: verdana;
+    padding: 5px 5px 5px 5px;
+    border-bottom: 1px solid #9BD1FA;
+    border-top: 1px solid #9BD1FA;
+}
+
+table.previouscalculations tr td a{
+    color: #000;
+}
+
+table.previouscalculations tr td.creationdate {
+    color: #666;
+    font-size: 12px;
+}
+
+div.calculationmaincontent {
+    padding: 20px;
+    margin: 50px;
+    background-color: #6bb7f1;
+    border: 1px solid #2e37e8;
+    -moz-box-shadow: 0px 0px 5px #888;
+    -webkit-box-shadow: 0px 0px 5px #888;
+    box-shadow: 0px 0px 5px #888;
+}
+
+h1.calculation {
+    color: #000;
+    margin: 0px;
+    font-family: verdana;
+}
+
+.expensetable {
+    border-collapse: collapse;
+    margin: 20px 5px;
+}
+
+.expensetable td {
+    border: 1px solid #777;
+    padding: 10px;
+}
+
+.expensetable tr td.header {
+    font-weight: bold;
+}
+
+.expensetable tr.balance td {
+    font-weight: bold;
+}
