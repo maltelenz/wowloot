@@ -40,7 +40,7 @@
 
 {% block content %}
 <div class="firstpagemaincontent">
-  <h1 class="firstpage">WhoOwsWhom Loot</h1>
+  <h1 class="firstpage">WhoOwsWhat Loot</h1>
   {% if error_message %}<div>{{ error_message }}</div>{% endif %}
   <div class="firstpagetext">
     Enter a name for your calculation:
@@ -72,6 +72,9 @@
       </td>
       <td class="creationdate">
 	(Created {{ calculation.creation_date }})
+      </td>
+      <td>
+	<a href="{% url calculation_delete calculation.id calculation.hashtag %}">Delete</a>
       </td>
     </tr>
     {% endfor %}

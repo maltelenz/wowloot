@@ -1,4 +1,5 @@
 from datetime import timedelta
+from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
@@ -44,20 +45,75 @@ def calculation(request, calcid, hashtag):
         form = ExpenseForm(request.POST) #Read in the submitted form
         if form.is_valid():
             form = ExpenseForm(request.POST, instance = Expense(calculation = calculation))
-            form.save()
-            form = ExpenseForm(instance = Expense(calculation = calculation)) #create new empty form
+            new_expense = form.save(commit = False)
+            new_expense.save()
+            for i in calculation.involved.all():
+                new_expense.benefactors.add(i)
+            #create new empty form
+            form = ExpenseForm(instance = calculation.new_expense())
         #else:
             #the form was not valid, give the user a chance to fix.
     else:
-        form = ExpenseForm(instance=Expense(calculation = calculation)) #create new empty form
-    
+        #create new empty form
+        form = ExpenseForm(instance = calculation.new_expense())
+    form.fields['person'].queryset = calculation.involved.all()
     #Get the final information on who is owing whom how much
     finalcount = calculation.finalcount()
 
+    #Get the form for adding a person
+    addpersonform = AddPersonForm()
+
+    #Get all expenses for this calculation in order
+    ordered_expenses = calculation.expense_set.all().order_by('id')
+
     return render_to_response('calculation.html', {
             'calculation': calculation,
+            'ordered_expenses': ordered_expenses,
             'form': form,
-            'owing': finalcount
+            'owing': finalcount,
+            'addpersonform': addpersonform,
             },
                               context_instance = RequestContext(request))
+
+def add_person(request, calcid, hashtag):
+    calculation = get_object_or_404(Calculation, pk = calcid, hashtag = hashtag)
+    if request.method == 'POST':
+        #Form has been submitted
+        form = AddPersonForm(request.POST) #Read in the submitted form
+        if form.is_valid():
+            new_person = Person(name = form.cleaned_data['name'])
+            new_person.save()
+            calculation.involved.add(new_person)
+            calculation.save()
+        #else:
+            #the form was not valid, go back to calculation page
+    return HttpResponseRedirect(reverse('calculation', args=[calcid, hashtag]))
+    
+
+def calculation_delete(request, calcid, hashtag):
+    calculation = get_object_or_404(Calculation, pk = calcid, hashtag = hashtag)
+    #calculation.delete()
+    request.session['calculations'].discard(int(calcid))
+    request.session.modified = True
+    return HttpResponseRedirect(reverse('home', args=[]))
+
+def expense_delete(request, calcid, hashtag, expenseid):
+    calculation = get_object_or_404(Calculation, pk = calcid, hashtag = hashtag)
+    expense = get_object_or_404(Expense, pk = expenseid, calculation = calculation)
+    expense.delete()
+    return HttpResponseRedirect(reverse('calculation', args=[calcid, hashtag]))
+
+def benefactor_delete(request, calcid, hashtag, expenseid, personid):
+    calculation = get_object_or_404(Calculation, pk = calcid, hashtag = hashtag)
+    expense = get_object_or_404(Expense, pk = expenseid, calculation = calculation)
+    person = get_object_or_404(Person, pk = personid)
+    expense.benefactors.remove(person)
+    return HttpResponseRedirect(reverse('calculation', args=[calcid, hashtag]))
+
+def benefactor_add(request, calcid, hashtag, expenseid, personid):
+    calculation = get_object_or_404(Calculation, pk = calcid, hashtag = hashtag)
+    expense = get_object_or_404(Expense, pk = expenseid, calculation = calculation)
+    person = get_object_or_404(Person, pk = personid)
+    expense.benefactors.add(person)
+    return HttpResponseRedirect(reverse('calculation', args=[calcid, hashtag]))
 

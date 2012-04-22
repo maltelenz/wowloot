@@ -9,6 +9,10 @@ body {
     background-color: #CCC;
 }
 
+a {
+    text-decoration: none;
+    color: inherit;
+}
 
 div.firstpagemaincontent {
     width: 450px;
@@ -111,15 +115,27 @@ h1.calculation {
     margin: 20px 5px;
 }
 
-.expensetable td {
+.expensetable tr td {
     border: 1px solid #777;
     padding: 10px;
+    margin: 0px;
 }
 
 .expensetable tr td.header {
     font-weight: bold;
 }
 
+.expensetable tr td.headernew,
+.expensetable tr td.tablenew {
+    border: 1px dashed #777;
+    border-left: 1px solid #777;
+}
+
+.expensetable tr.tablenew td {
+    border: 1px dashed #777;
+}
+
 .expensetable tr.balance td {
     font-weight: bold;
 }
+

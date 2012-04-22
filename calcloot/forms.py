@@ -1,11 +1,16 @@
-from django.forms import ModelForm
+from django import forms
 from calcloot.models import *
 
-class HomeForm(ModelForm):
+class HomeForm(forms.ModelForm):
     class Meta:
         model = Calculation
+        exclude = ('involved',)
 
-class ExpenseForm(ModelForm):
+class ExpenseForm(forms.ModelForm):
     class Meta:
         model = Expense
-        exclude = ('calculation',)
+        exclude = ('calculation', 'benefactors',)
+
+
+class AddPersonForm(forms.Form):
+    name = forms.CharField(max_length = 200)

@@ -4,27 +4,47 @@
 
 {% block content %}
 <div class="calculationmaincontent">
-  <h1 class="calculation">Who Ows Whom after {{ calculation.name }}</h1>
+  <h1 class="calculation">Who Ows What after {{ calculation.name }}</h1>
   <table class="expensetable">
     <tr>
+      <td class="header">&nbsp;</td>
       <td class="header">Paying person</td>
       <td class="header">Amount</td>
-      {% for benefactor in calculation.benefactors %}
-      <td class="header">{{ benefactor.name }}</td>
+      {% for person in calculation.involved.all %}
+      <td class="header">{{ person.name }}</td>
       {% endfor %}
+      <td class="headernew">
+	<form action="{% url add_person calculation.id calculation.hashtag %}" method="post">
+	  {% csrf_token %}
+	  {{ addpersonform.name }}
+	  <input type="submit" value="Add">
+	</form>
+      </td>
     </tr>
-    {% for expense in calculation.expense_set.all %}
+    {% for expense in ordered_expenses %}
     <tr>
+      <td><a href="{% url expense_delete calculation.id calculation.hashtag expense.id %}"><img src="{{STATIC_URL}}images/cross.png" alt="x" /></a></td>
       <td>{{ expense.person.name }}</td>
       <td>{{ expense.amount }} {{ expense.currency.name }}</td>
-      {% for benefactor in calculation.benefactors %}
-      <td>{% if benefactor in expense.benefactors.all %}x{% else %}-{% endif %}</td>
+      {% for person in calculation.involved.all %}
+      <td>{% if person in expense.benefactors.all %}
+	<a href="{% url benefactor_delete calculation.id calculation.hashtag expense.id person.id %}">
+	<img src="{{STATIC_URL}}images/tick.png" alt="x" />
+	</a>
+	{% else %}
+	<a href="{% url benefactor_add calculation.id calculation.hashtag expense.id person.id %}">
+	  -
+	</a>
+	{% endif %}
+      </td>
       {% endfor %}
+      <td class="tablenew"></td>
     </tr>
     {% endfor %}
     <form action="{% url calculation calculation.id calculation.hashtag %}" method="post">
       {% csrf_token %}
-      <tr>
+      <tr class="tablenew">
+	<td>&nbsp;</td>
 	<td>
 	  {{ form.person }}
 	</td>
@@ -32,24 +52,24 @@
 	  {{ form.amount }}
 	  {{ form.currency }}
 	</td>
-	<td>
-	  {{ form.benefactors }}
-	</td>
+	{% for person in calculation.involved.all %}
+	<td></td>
+	{% endfor %}
 	<td>
 	  <input type="submit" value="save">
 	</td>
       </tr>
     </form>
     <tr class="balance">
-      <td colspan="2">Balance</td>
-      {% for benefactor in calculation.benefactors %}
+      <td colspan="3">Balance</td>
+      {% for person in calculation.involved.all %}
       <td>
 	{% for key, value in owing.items %}
-	{% if key == benefactor %}{{ value }}{% endif %}
+	{% if key == person %}{{ value|floatformat:2 }}{% endif %}
 	{% endfor %}
       </td>
       {% endfor %}
-    </tr>
+      <td class="tablenew"></td>
     </tr>
   </table>
 </div>
