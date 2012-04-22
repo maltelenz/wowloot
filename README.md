@@ -1,6 +1,6 @@
-WhoOwsWhom Loot (wowloot)
+WhoOwsWhat Loot (wowloot)
 =======
-Django project to figure out who ows whom how much money.
+Django project to figure out who ows what to whom.
 
 Install instructions:
 
