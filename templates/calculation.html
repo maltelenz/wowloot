@@ -1,30 +1,56 @@
-<h2>Calculation {{ calculation.name }}</h2>
-<table>
-  <tr>
-    <td>Paying person</td>
-    <td>Amount</td>
-    {% for benefactor in calculation.benefactors %}
-    <td>{{ benefactor.name }}</td>
-    {% endfor %}
-  </tr>
-  {% for expense in calculation.expense_set.all %}
-  <tr>
-    <td>{{ expense.person.name }}</td>
-    <td>{{ expense.amount }} {{ expense.currency.name }}</td>
-    {% for benefactor in calculation.benefactors %}
-    <td>{% if benefactor in expense.benefactors.all %}x{% else %}-{% endif %}</td>
-    {% endfor %}
-  </tr>
-  {% endfor %}
-  </table>
-  <form action="{% url calculation calculation.id calculation.hashtag %}" method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="save">
-  </form>
+{% extends 'base.html' %}
 
-  {% for key, value in owing.items %}
-  <p>
-    {{ key|first }} ows {{ key|last }} {{value}}
-  </p>
-  {% endfor %}
+{% block title %} - {{ calculation.name }}{% endblock %}
+
+{% block content %}
+<div class="calculationmaincontent">
+  <h1 class="calculation">Who Ows Whom after {{ calculation.name }}</h1>
+  <table class="expensetable">
+    <tr>
+      <td class="header">Paying person</td>
+      <td class="header">Amount</td>
+      {% for benefactor in calculation.benefactors %}
+      <td class="header">{{ benefactor.name }}</td>
+      {% endfor %}
+    </tr>
+    {% for expense in calculation.expense_set.all %}
+    <tr>
+      <td>{{ expense.person.name }}</td>
+      <td>{{ expense.amount }} {{ expense.currency.name }}</td>
+      {% for benefactor in calculation.benefactors %}
+      <td>{% if benefactor in expense.benefactors.all %}x{% else %}-{% endif %}</td>
+      {% endfor %}
+    </tr>
+    {% endfor %}
+    <form action="{% url calculation calculation.id calculation.hashtag %}" method="post">
+      {% csrf_token %}
+      <tr>
+	<td>
+	  {{ form.person }}
+	</td>
+	<td>
+	  {{ form.amount }}
+	  {{ form.currency }}
+	</td>
+	<td>
+	  {{ form.benefactors }}
+	</td>
+	<td>
+	  <input type="submit" value="save">
+	</td>
+      </tr>
+    </form>
+    <tr class="balance">
+      <td colspan="2">Balance</td>
+      {% for benefactor in calculation.benefactors %}
+      <td>
+	{% for key, value in owing.items %}
+	{% if key == benefactor %}{{ value }}{% endif %}
+	{% endfor %}
+      </td>
+      {% endfor %}
+    </tr>
+    </tr>
+  </table>
+</div>
+{% endblock %}

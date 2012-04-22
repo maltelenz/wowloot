@@ -39,7 +39,18 @@ class Calculation(models.Model):
             else:
                 positive_owing_dict[(b,a)] = -v
                 
-        return positive_owing_dict
+        person_balance = {}
+        for ((a, b), v) in positive_owing_dict.items():
+            try:
+                person_balance[a] -= v
+            except KeyError:
+                person_balance[a] = -v
+            try:
+                person_balance[b] += v
+            except KeyError:
+                person_balance[b] = v
+
+        return person_balance
 
     def save(self, *args, **kwargs):
         #Update the hashtag
