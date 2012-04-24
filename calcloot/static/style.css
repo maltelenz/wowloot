@@ -117,7 +117,7 @@ h1.calculation {
 
 .expensetable tr td {
     border: 1px solid #777;
-    padding: 10px;
+    padding: 7px;
     margin: 0px;
 }
 
@@ -129,13 +129,19 @@ h1.calculation {
 .expensetable tr td.tablenew {
     border: 1px dashed #777;
     border-left: 1px solid #777;
+    background: #80D65E;
 }
 
 .expensetable tr.tablenew td {
     border: 1px dashed #777;
+    background: #80D65E;
 }
 
 .expensetable tr.balance td {
     font-weight: bold;
 }
 
+.expensetable tr td.iconcolumn {
+    text-align: center;
+    letter-spacing: 10px;
+}

@@ -90,7 +90,7 @@ def calculation(request, calcid, hashtag, edit_expense_id = None):
             'form': form,
             'owing': finalcount,
             'addpersonform': addpersonform,
-            'edit_expense_id': edit_expense_id,
+            'is_edit': is_edit,
             },
                               context_instance = RequestContext(request))
 

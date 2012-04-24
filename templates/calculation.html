@@ -24,7 +24,7 @@
     </tr>
     {% for expense in ordered_expenses %}
     <tr>
-      <td>
+      <td class="iconcolumn">
 	<a href="{% url expense_delete calculation.id calculation.hashtag expense.id %}"><img src="{{STATIC_URL}}images/cross.png" alt="D" /></a>
 	<a href="{% url expense_edit calculation.id calculation.hashtag expense.id %}"><img src="{{STATIC_URL}}images/pencil.png" alt="E" /></a>
       </td>
@@ -49,7 +49,9 @@
     <form action="{{ request.get_full_path }}" method="post">
       {% csrf_token %}
       <tr class="tablenew">
-	<td>&nbsp;</td>
+	<td class="iconcolumn">
+	  <img src="{{STATIC_URL}}images/{% if is_edit %}editgrey{% else %}addgrey{% endif %}.png" />
+	</td>
 	<td>
 	  {{ form.person }}
 	</td>
