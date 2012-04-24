@@ -38,24 +38,40 @@ def home(request):
             },
                               context_instance = RequestContext(request))
 
-def calculation(request, calcid, hashtag):
+def calculation(request, calcid, hashtag, edit_expense_id = None):
+    is_edit = edit_expense_id != None
     calculation = get_object_or_404(Calculation, pk = calcid, hashtag = hashtag)
     if request.method == 'POST':
         #Form has been submitted
         form = ExpenseForm(request.POST) #Read in the submitted form
         if form.is_valid():
-            form = ExpenseForm(request.POST, instance = Expense(calculation = calculation))
-            new_expense = form.save(commit = False)
-            new_expense.save()
-            for i in calculation.involved.all():
-                new_expense.benefactors.add(i)
+            print form.cleaned_data
+            if is_edit:
+                #edit existing expense
+                existing_expense = get_object_or_404(Expense, pk = edit_expense_id)
+                form = ExpenseForm(request.POST, instance = existing_expense)
+                form.save()
+                #redirect to the 'proper' calculation page
+                return HttpResponseRedirect(reverse('calculation', args=[calcid, hashtag]))
+                
+            else:
+                #create new expense
+                form = ExpenseForm(request.POST, instance = Expense(calculation = calculation))
+                new_expense = form.save(commit = False)
+                new_expense.save()
+                for i in calculation.involved.all():
+                    new_expense.benefactors.add(i)
             #create new empty form
             form = ExpenseForm(instance = calculation.new_expense())
         #else:
             #the form was not valid, give the user a chance to fix.
     else:
-        #create new empty form
-        form = ExpenseForm(instance = calculation.new_expense())
+        if edit_expense_id != None:
+            edit_expense = get_object_or_404(Expense, pk = edit_expense_id)
+            form = ExpenseForm(instance = edit_expense)
+        else:
+            #create new empty form
+            form = ExpenseForm(instance = calculation.new_expense())
     form.fields['person'].queryset = calculation.involved.all()
     #Get the final information on who is owing whom how much
     finalcount = calculation.finalcount()
@@ -65,6 +81,8 @@ def calculation(request, calcid, hashtag):
 
     #Get all expenses for this calculation in order
     ordered_expenses = calculation.expense_set.all().order_by('id')
+    if is_edit:
+        ordered_expenses = ordered_expenses.exclude(pk=edit_expense_id)
 
     return render_to_response('calculation.html', {
             'calculation': calculation,
@@ -72,6 +90,7 @@ def calculation(request, calcid, hashtag):
             'form': form,
             'owing': finalcount,
             'addpersonform': addpersonform,
+            'edit_expense_id': edit_expense_id,
             },
                               context_instance = RequestContext(request))
 
@@ -88,7 +107,8 @@ def add_person(request, calcid, hashtag):
         #else:
             #the form was not valid, go back to calculation page
     return HttpResponseRedirect(reverse('calculation', args=[calcid, hashtag]))
-    
+
+
 
 def calculation_delete(request, calcid, hashtag):
     calculation = get_object_or_404(Calculation, pk = calcid, hashtag = hashtag)

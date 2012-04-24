@@ -11,6 +11,5 @@ class ExpenseForm(forms.ModelForm):
         model = Expense
         exclude = ('calculation', 'benefactors',)
 
-
 class AddPersonForm(forms.Form):
     name = forms.CharField(max_length = 200)
