@@ -45,7 +45,6 @@ def calculation(request, calcid, hashtag, edit_expense_id = None):
         #Form has been submitted
         form = ExpenseForm(request.POST) #Read in the submitted form
         if form.is_valid():
-            print form.cleaned_data
             if is_edit:
                 #edit existing expense
                 existing_expense = get_object_or_404(Expense, pk = edit_expense_id)
@@ -71,10 +70,10 @@ def calculation(request, calcid, hashtag, edit_expense_id = None):
             form = ExpenseForm(instance = edit_expense)
         else:
             #create new empty form
-            form = ExpenseForm(instance = calculation.new_expense())
+            form = ExpenseForm(instance = calculation.new_expense()) 
     form.fields['person'].queryset = calculation.involved.all()
     #Get the final information on who is owing whom how much
-    finalcount = calculation.finalcount()
+    balance = calculation.balance()
 
     #Get the form for adding a person
     addpersonform = AddPersonForm()
@@ -84,13 +83,16 @@ def calculation(request, calcid, hashtag, edit_expense_id = None):
     if is_edit:
         ordered_expenses = ordered_expenses.exclude(pk=edit_expense_id)
 
+    transfers = calculation.transfers()
+
     return render_to_response('calculation.html', {
             'calculation': calculation,
             'ordered_expenses': ordered_expenses,
             'form': form,
-            'owing': finalcount,
+            'owing': balance,
             'addpersonform': addpersonform,
             'is_edit': is_edit,
+            'transfers': transfers,
             },
                               context_instance = RequestContext(request))
 
@@ -104,8 +106,21 @@ def add_person(request, calcid, hashtag):
             new_person.save()
             calculation.involved.add(new_person)
             calculation.save()
+            for e in calculation.expense_set.all():
+                e.benefactors.add(new_person)
         #else:
             #the form was not valid, go back to calculation page
+    return HttpResponseRedirect(reverse('calculation', args=[calcid, hashtag]))
+
+def delete_person(request, calcid, hashtag, personid):
+    calculation = get_object_or_404(Calculation, pk = calcid, hashtag = hashtag)
+    person = calculation.involved.get(pk = personid)
+    for e in calculation.expense_set.all():
+        if e.person == person:
+            e.delete()
+        else:
+            e.benefactors.remove(person)
+    calculation.involved.remove(person)
     return HttpResponseRedirect(reverse('calculation', args=[calcid, hashtag]))
 
 

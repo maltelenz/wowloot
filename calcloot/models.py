@@ -1,4 +1,5 @@
 import hashlib
+from operator import itemgetter
 from django.db import models
 
 class Person(models.Model):
@@ -19,7 +20,7 @@ class Calculation(models.Model):
     def code_hashtag(self):
         return hashlib.md5(self.name).hexdigest()[:10]
 
-    def finalcount(self):
+    def balance(self):
         owing_dict = {}
         for e in self.expense_set.all():
             for owing in e.owed():
@@ -49,6 +50,48 @@ class Calculation(models.Model):
                 person_balance[b] = v
 
         return person_balance
+
+    def transfers(self):
+        def sortbalance(b):
+            return sorted(b.iteritems(), key = itemgetter(1))
+        
+        def largest_minus(b):
+            return sortbalance(b)[0][0]
+
+        def smallest_larger(b, comp):
+            for p, a in sortbalance(b):
+                if a + comp > 0:
+                    return p
+            return sortbalance(b)[-1][0]
+        
+        def nonzero_exists(b):
+            sortedb = sortbalance(b)
+            if len(b) == 0:
+                return False
+            if len(sortedb) == 1:
+                return abs(sortedb[0][1]) > 0.001
+            return abs(sortedb[0][1]) > 0.001 or abs(sortedb[-1][1]) > 0.001
+        balance = self.balance()
+        computed_transfers = set()
+        i=0
+        while nonzero_exists(balance) and i<10:
+            i+=1
+            largestminus = largest_minus(balance)
+            smallestlarger = smallest_larger(balance, balance[largestminus])
+            transferamount = max(balance[largestminus], -balance[smallestlarger])
+            computed_transfers.add((largestminus, smallestlarger, -transferamount))
+            balance[largestminus] -= transferamount
+            balance[smallestlarger] += transferamount
+        balance_check = self.balance()
+        for f,t,a in computed_transfers:
+                balance_check[f] += a
+                balance_check[t] -= a
+        for p, b in balance_check.items():
+            assert(abs(b) < 0.01)
+
+        return computed_transfers
+        
+        
 
     def new_expense(self):
         try:

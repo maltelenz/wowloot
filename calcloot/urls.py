@@ -8,6 +8,7 @@ urlpatterns = patterns('calcloot.views',
     # Examples:
     url(r'^$', 'home', name = 'home'),
     url(r'^person/a/(?P<calcid>\d+)/(?P<hashtag>\w+)/$', 'add_person', name = "add_person"),
+    url(r'^person/d/(?P<calcid>\d+)/(?P<hashtag>\w+)/(?P<personid>\d+)/$', 'delete_person', name = "delete_person"),
     url(r'^calculation/(?P<calcid>\d+)/(?P<hashtag>\w+)/$', 'calculation', name = "calculation"),
     url(r'^calculation/d/(?P<calcid>\d+)/(?P<hashtag>\w+)/$', 'calculation_delete', name = "calculation_delete"),
     url(r'^calculation/(?P<calcid>\d+)/(?P<hashtag>\w+)/(?P<edit_expense_id>\d+)/$', 'calculation', name = "expense_edit"),
