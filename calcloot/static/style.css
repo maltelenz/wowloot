@@ -115,13 +115,27 @@ h1.calculation {
     margin: 20px 5px;
 }
 
+.expensetable tr.even {
+    background: #DEEBFF;
+}
+
+.expensetable tr.odd {
+    background: #CCE0FF;
+}
+
 .expensetable tr td {
     border: 1px solid #777;
     padding: 7px;
     margin: 0px;
 }
 
-.expensetable tr td.header {
+.expensetable tr:hover {
+    background: #DDFFFF;
+}
+
+.expensetable tr td.header,
+.expensetable tr.balance td {
+    background: #BDBDBD;
     font-weight: bold;
 }
 
@@ -135,10 +149,6 @@ h1.calculation {
 .expensetable tr.tablenew td {
     border: 1px dashed #777;
     background: #80D65E;
-}
-
-.expensetable tr.balance td {
-    font-weight: bold;
 }
 
 .expensetable tr td.iconcolumn {

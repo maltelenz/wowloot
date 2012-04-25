@@ -6,9 +6,9 @@
 <div class="calculationmaincontent">
   <h1 class="calculation">Who Ows What after {{ calculation.name }}</h1>
   <table class="expensetable">
-    <tr>
+    <tr class="header">
       <td class="header">&nbsp;</td>
-      <td class="header">Paying person</td>
+      <td class="header">Who paid?</td>
       <td class="header">Amount</td>
       <td class="header">Name (optional)</td>
       {% for person in calculation.involved.all %}
@@ -23,7 +23,7 @@
       </td>
     </tr>
     {% for expense in ordered_expenses %}
-    <tr>
+    <tr class="{% cycle 'even' 'odd' %}">
       <td class="iconcolumn">
 	<a href="{% url expense_delete calculation.id calculation.hashtag expense.id %}"><img src="{{STATIC_URL}}images/cross.png" alt="D" /></a>
 	<a href="{% url expense_edit calculation.id calculation.hashtag expense.id %}"><img src="{{STATIC_URL}}images/pencil.png" alt="E" /></a>
@@ -43,7 +43,6 @@
 	{% endif %}
       </td>
       {% endfor %}
-      <td class="tablenew"></td>
     </tr>
     {% endfor %}
     <form action="{{ request.get_full_path }}" method="post">
@@ -63,11 +62,12 @@
 	  {{ form.name }}
 	</td>
 	{% for person in calculation.involved.all %}
-	<td></td>
-	{% endfor %}
 	<td>
+	  {% if forloop.last %}
 	  <input type="submit" value="save">
+	  {% endif %}
 	</td>
+	{% endfor %}
       </tr>
     </form>
     <tr class="balance">
@@ -79,7 +79,6 @@
 	{% endfor %}
       </td>
       {% endfor %}
-      <td class="tablenew"></td>
     </tr>
   </table>
 </div>
