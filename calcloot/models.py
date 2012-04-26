@@ -8,11 +8,22 @@ class Person(models.Model):
     def __unicode__(self):
         return self.name
 
+class Currency(models.Model):
+    name = models.CharField(max_length = 5)
+    rate = models.FloatField()
+
+    class Meta:
+        ordering = ["name"]
+
+    def __unicode__(self):
+        return self.name
+
 class Calculation(models.Model):
     name = models.CharField(max_length = 200)
     creation_date = models.DateTimeField(editable = False)
     hashtag = models.CharField(max_length = 20, editable = False)
     involved = models.ManyToManyField(Person, verbose_name = 'persons involved', related_name = 'involved')
+    currency = models.ForeignKey(Currency, default = Currency.objects.get(name="USD").id)
 
     def __unicode__(self):
         return self.name + "(" + self.hashtag + ")"
@@ -99,7 +110,7 @@ class Calculation(models.Model):
             new_currency = latest_expense.currency
             new_person = latest_expense.person
         except IndexError:
-            new_currency = Currency.objects.get(name="USD")
+            new_currency = self.currency
             try:
                 new_person = self.involved.all()[0]
             except IndexError:
@@ -113,12 +124,6 @@ class Calculation(models.Model):
         self.hashtag = self.code_hashtag()
         super(Calculation, self).save(*args, **kwargs) #Call the original save method
 
-class Currency(models.Model):
-    name = models.CharField(max_length = 5)
-
-    def __unicode__(self):
-        return self.name
-
 class Expense(models.Model):
     calculation = models.ForeignKey(Calculation)
     person = models.ForeignKey(Person, verbose_name = 'person who paid', related_name = 'paying')
@@ -127,9 +132,13 @@ class Expense(models.Model):
     currency = models.ForeignKey(Currency)
     benefactors = models.ManyToManyField(Person, verbose_name = 'persons benefiting', related_name = 'benefactors')
     
+    def amount_in_calculation_currency(self):
+        #convert into calculation currency
+        return self.amount * (self.calculation.currency.rate / self.currency.rate)
+
     def owed(self):
         got_money_count = self.benefactors.count()
-        return [(b, self.person, self.amount/got_money_count) for b in self.benefactors.all() if b != self.person]
+        return [(b, self.person, self.amount_in_calculation_currency()/got_money_count) for b in self.benefactors.all() if b != self.person]
     
 
     def __unicode__(self):

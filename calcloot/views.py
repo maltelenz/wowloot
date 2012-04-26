@@ -6,11 +6,13 @@ from django.template import RequestContext
 from django.utils import timezone
 from calcloot.models import Calculation, Expense, Person, Currency
 from calcloot.forms import *
+from calcloot.currency import *
 
 def home(request):
     if request.method == 'POST':
         #Form has been submitted
         form = HomeForm(request.POST) #Read in the submitted form
+        print form.errors
         if form.is_valid():
             #Create a new calculation
             name = form.cleaned_data['name']
@@ -78,6 +80,9 @@ def calculation(request, calcid, hashtag, edit_expense_id = None):
     #Get the form for adding a person
     addpersonform = AddPersonForm()
 
+    #Get the form for changing currency
+    currencyform = ChangeCurrencyForm(instance = calculation)
+    
     #Get all expenses for this calculation in order
     ordered_expenses = calculation.expense_set.all().order_by('id')
     if is_edit:
@@ -93,6 +98,7 @@ def calculation(request, calcid, hashtag, edit_expense_id = None):
             'addpersonform': addpersonform,
             'is_edit': is_edit,
             'transfers': transfers,
+            'currencyform': currencyform,
             },
                               context_instance = RequestContext(request))
 
@@ -123,7 +129,16 @@ def delete_person(request, calcid, hashtag, personid):
     calculation.involved.remove(person)
     return HttpResponseRedirect(reverse('calculation', args=[calcid, hashtag]))
 
-
+def change_currency(request, calcid, hashtag):
+    calculation = get_object_or_404(Calculation, pk = calcid, hashtag = hashtag)
+    if request.method == 'POST':
+        #Form has been submitted
+        form = ChangeCurrencyForm(request.POST, instance = calculation) #Read in the submitted form
+        if form.is_valid():
+            form.save()
+        #else:
+            #the form was not valid, go back to calculation page
+    return HttpResponseRedirect(reverse('calculation', args=[calcid, hashtag]))
 
 def calculation_delete(request, calcid, hashtag):
     calculation = get_object_or_404(Calculation, pk = calcid, hashtag = hashtag)

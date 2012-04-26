@@ -5,6 +5,13 @@
 {% block content %}
 <div class="calculationmaincontent">
   <h1 class="calculation">Who Ows What after {{ calculation.name }}</h1>
+  <h2>Currency</h2>
+  <form action="{% url change_currency calculation.id calculation.hashtag %}" method="post">
+    {% csrf_token %}
+    {{ currencyform.currency }}
+    <input type="submit" value="Change">
+  </form>
+  <h2>Expenses</h2>
   <table class="expensetable">
     <tr class="header">
       <td class="header">&nbsp;</td>
@@ -86,7 +93,7 @@
   </table>
   <h2>Solution</h2>
   {% for from_person, to_person, amount in transfers %}
-  <div class="solutionrow"><span class="personname">{{ from_person }}</span> pays <span class="personname">{{ to_person }}</span> {{ amount|floatformat:2 }}</div>
+  <div class="solutionrow"><span class="personname">{{ from_person }}</span> pays <span class="personname">{{ to_person }}</span> {{ amount|floatformat:2 }} {{ calculation.currency.name }}</div>
   {% endfor %}
   
 </div>

@@ -4,7 +4,7 @@ from calcloot.models import *
 class HomeForm(forms.ModelForm):
     class Meta:
         model = Calculation
-        exclude = ('involved',)
+        fields = ('name',)
 
 class ExpenseForm(forms.ModelForm):
     class Meta:
@@ -17,3 +17,8 @@ class ExpenseForm(forms.ModelForm):
 
 class AddPersonForm(forms.Form):
     name = forms.CharField(max_length = 200)
+
+class ChangeCurrencyForm(forms.ModelForm):
+    class Meta:
+        model = Calculation
+        fields = ('currency',)
