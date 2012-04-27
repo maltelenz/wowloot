@@ -12,7 +12,6 @@ def home(request):
     if request.method == 'POST':
         #Form has been submitted
         form = HomeForm(request.POST) #Read in the submitted form
-        print form.errors
         if form.is_valid():
             #Create a new calculation
             name = form.cleaned_data['name']
