@@ -187,8 +187,13 @@ h1.calculation {
     letter-spacing: 10px;
 }
 
+.balancecurrency {
+    color: #555;
+}
+
 .solutionrow {
     padding: 20px;
+    font-family: verdana;
 }
 
 .personname {

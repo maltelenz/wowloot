@@ -41,7 +41,10 @@
 	<a href="{% url expense_edit calculation.id calculation.hashtag expense.id %}"><img src="{{STATIC_URL}}images/pencil.png" alt="E" /></a>
       </td>
       <td>{{ expense.person.name }}</td>
-      <td>{{ expense.amount }} {{ expense.currency.name }}</td>
+      <td>{{ expense.amount }} {{ expense.currency.name }}
+	{% if expense.currency != calculation.currency %}({{ expense.amount_in_calculation_currency|floatformat:2 }} {{ expense.calculation.currency.name }})
+	{% endif %}
+      </td>
       <td>{{ expense.name }}</td>
       {% for person in calculation.involved.all %}
       <td>{% if person in expense.benefactors.all %}
@@ -85,7 +88,7 @@
     </form>
     {% endif %}
     <tr class="balance">
-      <td colspan="4">Balance</td>
+      <td colspan="4">Balance <span class="balancecurrency">[{{calculation.currency.name}}]</span></td>
       {% for person in calculation.involved.all %}
       <td>
 	{% for key, value in owing.items %}
