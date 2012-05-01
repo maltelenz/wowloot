@@ -7,6 +7,7 @@ admin.autodiscover()
 urlpatterns = patterns('calcloot.views',
     # Examples:
     url(r'^$', 'home', name = 'home'),
+    url(r'^about/$', 'about', name = 'about'),
     url(r'^person/a/(?P<calcid>\d+)/(?P<hashtag>\w+)/$', 'add_person', name = "add_person"),
     url(r'^person/d/(?P<calcid>\d+)/(?P<hashtag>\w+)/(?P<personid>\d+)/$', 'delete_person', name = "delete_person"),
     url(r'^currency/(?P<calcid>\d+)/(?P<hashtag>\w+)/$', 'change_currency', name = "change_currency"),

@@ -19,7 +19,6 @@ div.firstpagemaincontent {
     padding: 20px 55px 50px 20px;
     margin-left: auto;
     margin-right: auto;
-    margin-top: 200px;
     background-color: #6bb7f1;
     border: 1px solid #2e37e8;
     -moz-box-shadow: 0px 0px 5px #888;
@@ -94,9 +93,34 @@ table.previouscalculations tr td.creationdate {
     font-size: 12px;
 }
 
+div.toplinks {
+    text-align: right;
+    color: #333;
+    font-weight: bold;
+    font-family: verdana;
+    font-size: 13px;
+    text-shadow: 1px 1px 2px #6bb7f1;
+}
+
+div.toplinks a {
+    text-decoration: underline;
+}
+
+div.toplinkscalculation {
+    margin: 50px 55px 5px 50px;
+}
+
+div.toplinkshome {
+    width: 525px;
+    padding: 5px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 200px;
+}
+
 div.calculationmaincontent {
     padding: 20px;
-    margin: 50px;
+    margin: 0px 50px 50px 50px;
     background-color: #6bb7f1;
     border: 1px solid #2e37e8;
     -moz-box-shadow: 0px 0px 5px #888;
@@ -162,4 +186,9 @@ h1.calculation {
 
 .personname {
     font-weight: bold;
+}
+
+.aboutlink {
+    text-decoration: underline;
+    color: #555;
 }

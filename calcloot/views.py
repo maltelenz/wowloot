@@ -39,6 +39,11 @@ def home(request):
             },
                               context_instance = RequestContext(request))
 
+
+def about(request):
+    return render_to_response('about.html', {}, context_instance = RequestContext(request))
+    
+
 def calculation(request, calcid, hashtag, edit_expense_id = None):
     is_edit = edit_expense_id != None
     calculation = get_object_or_404(Calculation, pk = calcid, hashtag = hashtag)
