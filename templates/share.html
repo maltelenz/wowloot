@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %} - Share{% endblock %}
+
+{% block toplinks %}home{% endblock %}
+
+{% block content %}
+<div class="firstpagemaincontent">
+  <h1 class="calculation">Who Ows What: {{ calculation.name }}</h1>
+  <div class="sharetext">
+    <img src={{ STATIC_URL }}images/link.png alt="link"/> Share the calculation by giving someone this link:
+    <input type="text" value="{{full_uri}}" readonly="readonly" class="copyurlfield">
+  </div>
+  <div class="sharetext">
+    <img src={{ STATIC_URL }}images/email.png alt="email"/> Share the calculation via email:
+    <textarea readonly="readonly" class="copyurlfield">{{ email_text }}</textarea>
+    <form action="{% url calculation_share calculation.id calculation.hashtag %}" method="post" style="padding-top: 5px;">
+      {% csrf_token %}
+      {{ form.address }}
+      <input type="submit" value="Send email">
+    </form>
+  </div>
+  <div class="backtocalc">
+    &laquo; <a href="{% url calculation calculation.id calculation.hashtag %}">Back to calculation</a>
+  </div>
+</div>
+{% endblock %}

@@ -1,4 +1,5 @@
 from datetime import timedelta
+from django.core.mail import send_mail
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response, get_object_or_404
@@ -157,6 +158,31 @@ def calculation_delete(request, calcid, hashtag):
     request.session['calculations'].discard(int(calcid))
     request.session.modified = True
     return HttpResponseRedirect(reverse('home', args=[]))
+
+def calculation_share(request, calcid, hashtag):
+    calculation = get_object_or_404(Calculation, pk = calcid, hashtag = hashtag)
+    full_uri = request.build_absolute_uri(reverse('calculation', args=[calcid, hashtag]))
+    email_text = "Someone wants to share the expense calculation \"" + calculation.name + "\" with you on WOWLoot.\n\nYou can access the calculation here: " + full_uri + "\n\n--\nGreetings,\nWOWLoot"
+    if request.method == 'POST':
+        #Form has been submitted
+        form = ShareForm(request.POST) #Read in the submitted form
+        if form.is_valid():
+            address = form.cleaned_data['address']
+            #send email
+            send_mail('Shared calculation on WOWLoot: ' + calculation.name, email_text, 'info@wowloot.com', [address], fail_silently = False)
+            return HttpResponseRedirect(reverse('calculation', args=[calcid, hashtag]))
+        #else:
+            #the form was not valid, give chance to fix
+    else:
+        form = ShareForm() #create new empty form
+        
+    return render_to_response('share.html', {
+            'calculation': calculation,
+            'form': form,
+            'email_text': email_text,
+            'full_uri': full_uri,
+            },
+                              context_instance = RequestContext(request))
 
 def expense_delete(request, calcid, hashtag, expenseid):
     calculation = get_object_or_404(Calculation, pk = calcid, hashtag = hashtag)

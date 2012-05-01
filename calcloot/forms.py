@@ -18,6 +18,9 @@ class ExpenseForm(forms.ModelForm):
 class AddPersonForm(forms.Form):
     name = forms.CharField(max_length = 200)
 
+class ShareForm(forms.Form):
+    address = forms.EmailField(widget = forms.TextInput(attrs={'size': '50'}))
+
 class ChangeCurrencyForm(forms.ModelForm):
     class Meta:
         model = Calculation
