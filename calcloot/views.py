@@ -47,6 +47,13 @@ def about(request):
 def calculation(request, calcid, hashtag, edit_expense_id = None):
     is_edit = edit_expense_id != None
     calculation = get_object_or_404(Calculation, pk = calcid, hashtag = hashtag)
+    #If this is first view for user, add it to session
+    try:
+        request.session['calculations'].add(calculation.id)
+    except KeyError:
+        request.session['calculations'] = {calculation.id}
+    request.session.modified = True
+
     if request.method == 'POST':
         #Form has been submitted
         form = ExpenseForm(request.POST) #Read in the submitted form
