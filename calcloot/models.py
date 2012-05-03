@@ -18,16 +18,19 @@ class Currency(models.Model):
     def __unicode__(self):
         return self.name
 
+def get_default_currency():
+    return Currency.objects.get(name="USD")
+    
 class Calculation(models.Model):
     name = models.CharField(max_length = 200)
     creation_date = models.DateTimeField(editable = False)
     hashtag = models.CharField(max_length = 20, editable = False)
     involved = models.ManyToManyField(Person, verbose_name = 'persons involved', related_name = 'involved')
-    currency = models.ForeignKey(Currency, default = Currency.objects.get(name="USD").id)
-
+    currency = models.ForeignKey(Currency, default = get_default_currency)
+    
     def __unicode__(self):
         return self.name + "(" + self.hashtag + ")"
-
+    
     def code_hashtag(self):
         return hashlib.md5(self.name).hexdigest()[:10]
 
