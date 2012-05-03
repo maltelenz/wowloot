@@ -2,6 +2,7 @@ from django.conf.urls import patterns, include, url
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
+from wowloot import settings
 admin.autodiscover()
 
 urlpatterns = patterns('calcloot.views',
@@ -21,3 +22,13 @@ urlpatterns = patterns('calcloot.views',
 
 )
 
+if settings.DEBUG:
+    urlpatterns += patterns('',
+                            (r'^404/',
+                             'django.views.generic.simple.' \
+                                 'direct_to_template',
+                             {'template': '404.html'}),
+                            (r'^500/',
+                             'django.views.generic.simple.' \
+                                 'direct_to_template',
+                             {'template': '500.html'}))
