@@ -21,7 +21,7 @@
   <h2>Expenses</h2>
   <table class="expensetable">
     <tr class="header">
-      <td class="header">&nbsp;</td>
+      <td class="header iconcolumn">&nbsp;</td>
       <td class="header">Who paid?</td>
       <td class="header">Amount <span class="balancecurrency">[{{calculation.currency.name}}]</span></td>
       <td class="header">Name (optional)</td>
@@ -40,6 +40,21 @@
       </td>
     </tr>
     {% for expense in ordered_expenses %}
+    {% if forloop.counter|divisibleby:10 %}
+
+    <tr class="subheader">
+      <td class="subheader iconcolumn">&nbsp;</td>
+      <td class="subheader">Who paid?</td>
+      <td class="subheader">Amount <span class="balancecurrency">[{{calculation.currency.name}}]</span></td>
+      <td class="subheader">Name</td>
+      {% for person in calculation.involved.all %}
+      <td class="subheader">
+	{{ person.name }}
+      </td>
+      {% endfor %}
+    </tr>
+    {% endif %}
+
     <tr class="{% cycle 'even' 'odd' %}">
       <td class="iconcolumn">
 	<a href="{% url expense_delete calculation.id calculation.hashtag expense.id %}"><img src="{{STATIC_URL}}images/cross.png" alt="D" /></a>

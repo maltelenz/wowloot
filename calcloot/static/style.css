@@ -158,7 +158,7 @@ h1.calculation {
     border: 1px solid #777;
     padding: 7px;
     margin: 0px;
-    font-size: 16px;
+    font-size: 13px;
     font-family: verdana;
 }
 
@@ -177,6 +177,12 @@ h1.calculation {
     border: 1px dashed #777;
     border-left: 1px solid #777;
     background: #80D65E;
+}
+
+.expensetable tr td.subheader {
+    background: #CDCDCD;
+    font-weight: bold;
+    color: #555;
 }
 
 .expensetable tr.tablenew td {
