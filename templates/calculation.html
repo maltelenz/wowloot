@@ -23,7 +23,7 @@
     <tr class="header">
       <td class="header">&nbsp;</td>
       <td class="header">Who paid?</td>
-      <td class="header">Amount</td>
+      <td class="header">Amount <span class="balancecurrency">[{{calculation.currency.name}}]</span></td>
       <td class="header">Name (optional)</td>
       {% for person in calculation.involved.all %}
       <td class="header">
@@ -46,8 +46,8 @@
 	<a href="{% url expense_edit calculation.id calculation.hashtag expense.id %}"><img src="{{STATIC_URL}}images/pencil.png" alt="E" /></a>
       </td>
       <td>{{ expense.person.name }}</td>
-      <td>{{ expense.amount }} {{ expense.currency.name }}
-	{% if expense.currency != calculation.currency %}({{ expense.amount_in_calculation_currency|floatformat:2 }} {{ expense.calculation.currency.name }})
+      <td>{{ expense.amount_in_calculation_currency|floatformat:2 }}
+	{% if expense.currency != calculation.currency %}({{ expense.amount }} {{ expense.currency.name }})
 	{% endif %}
       </td>
       <td>{{ expense.name }}</td>
