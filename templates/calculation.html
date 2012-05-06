@@ -4,21 +4,24 @@
 
 {% block toplinks %}calculation{% endblock %}
 
-{% block content %}
+{% block contentwrapperstart %}
 <div class="calculationmaincontent">
-  <h1 class="calculation">Who Ows What: {{ calculation.name }}</h1>
+  {% endblock %}
+
+  {% block content %}
   <div class="floatingsharebutton">
     <a href="{% url calculation_share calculation.id calculation.hashtag %}">
       <img src={{ STATIC_URL }}images/share.png alt="Share"/> Share
     </a>
   </div>
-  <h2>Currency</h2>
+  <h2 class="calculation">{{ calculation.name }}</h2>
+  <h3>Currency</h3>
   <form action="{% url change_currency calculation.id calculation.hashtag %}" method="post">
     {% csrf_token %}
     {{ currencyform.currency }}
     <input type="submit" value="Change">
   </form>
-  <h2>Expenses</h2>
+  <h3>Expenses</h3>
   <table class="expensetable">
     <tr class="header">
       <td class="header iconcolumn">&nbsp;</td>
@@ -118,10 +121,13 @@
       {% endfor %}
     </tr>
   </table>
-  <h2>Solution</h2>
+  <h3>Solution</h3>
   {% for from_person, to_person, amount in transfers %}
   <div class="solutionrow"><span class="personname">{{ from_person }}</span> pays <span class="personname">{{ to_person }}</span> {{ amount|floatformat:2 }} {{ calculation.currency.name }}</div>
   {% endfor %}
+
+  {% endblock %}
   
+  {% block contentwrapperend %}
 </div>
 {% endblock %}

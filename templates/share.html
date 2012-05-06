@@ -4,9 +4,11 @@
 
 {% block toplinks %}home{% endblock %}
 
-{% block content %}
+{% block contentwrapperstart %}
 <div class="firstpagemaincontent">
-  <h1 class="calculation">Who Ows What: {{ calculation.name }}</h1>
+  {% endblock %}
+  {% block content %}
+  <h2 class="calculation">{{ calculation.name }}</h2>
   <div class="sharetext">
     <img src={{ STATIC_URL }}images/link.png alt="link"/> Share the calculation by giving someone this link:
     <input type="text" value="{{full_uri}}" readonly="readonly" class="copyurlfield">
@@ -23,5 +25,7 @@
   <div class="backtocalc">
     &laquo; <a href="{% url calculation calculation.id calculation.hashtag %}">Back to calculation</a>
   </div>
+  {% endblock %}
+  {% block contentwrapperend %}
 </div>
 {% endblock %}

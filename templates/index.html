@@ -40,9 +40,10 @@
 
 {% block toplinks %}home{% endblock %}
 
-{% block content %}
+{% block contentwrapperstart %}
 <div class="firstpagemaincontent">
-  <h1 class="firstpage">WhoOwsWhat Loot</h1>
+  {% endblock %}
+  {% block content %}
   {% if error_message %}<div>{{ error_message }}</div>{% endif %}
   <div class="firstpagetext">
     Find the easiest way to even out expenses paid, for example after a trip.
@@ -66,9 +67,9 @@
     </form>
   </div>
   {% if previous_calculations %}
-  <div class="firstpagetext">
+  <h3>
     Previous calculations:
-  </div>
+  </h3>
   <table class="previouscalculations">
     {% for calculation in previous_calculations %}
     <tr>
@@ -85,5 +86,7 @@
     {% endfor %}
   </table>
   {% endif %}
+  {% endblock %}
+  {% block contentwrapperend %}
 </div>
 {% endblock %}

@@ -4,14 +4,17 @@
 
 {% block toplinks %}home{% endblock %}
 
-{% block content %}
+{% block contentwrapperstart %}
 <div class="firstpagemaincontent">
-  <h1 class="firstpage">WhoOwsWhat Loot</h1>
+  {% endblock %}
+  {% block content %}
   <div class="firstpagetext">
     Who Ows What Loot is a small web application for calculating who needs to pay what to whom, for example after a trip.
   </div>
   <div class="firstpagetext">
     It is created by Malte Lenz (<a href="http://maltelenz.com/" class="aboutlink">maltelenz.com</a>). The source code is available on <a href="https://github.com/maltelenz/wowloot/" class="aboutlink">github</a> for any non-commercial use. 
   </div>
+  {% endblock %}
+  {% block contentwrapperend %}
 </div>
 {% endblock %}
