@@ -1,5 +1,7 @@
 # Django settings for wowloot project.
 
+OPEN_EXCHANGE_APP_ID = 'xyz'
+
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
