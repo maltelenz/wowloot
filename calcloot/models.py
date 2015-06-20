@@ -2,6 +2,10 @@ import hashlib
 from operator import itemgetter
 from django.db import models
 
+class UnsavedForeignKey(models.ForeignKey):
+    # A ForeignKey which can point to an unsaved object
+    allow_unsaved_instance_assignment = True
+
 class Person(models.Model):
     name = models.CharField(max_length = 200)
 
@@ -129,7 +133,7 @@ class Calculation(models.Model):
 
 class Expense(models.Model):
     calculation = models.ForeignKey(Calculation)
-    person = models.ForeignKey(Person, verbose_name = 'person who paid', related_name = 'paying')
+    person = UnsavedForeignKey(Person, verbose_name = 'person who paid', related_name = 'paying')
     name = models.CharField(max_length = 300, blank = True)
     amount = models.FloatField()
     currency = models.ForeignKey(Currency)
