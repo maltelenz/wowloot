@@ -1,4 +1,5 @@
 from django.conf.urls import patterns, include, url
+from django.views.generic import TemplateView
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
@@ -25,10 +26,7 @@ urlpatterns = patterns('calcloot.views',
 if settings.DEBUG:
     urlpatterns += patterns('',
                             (r'^404/',
-                             'django.views.generic.simple.' \
-                                 'direct_to_template',
-                             {'template': '404.html'}),
+                                TemplateView.as_view(template_name='404.html')),
                             (r'^500/',
-                             'django.views.generic.simple.' \
-                                 'direct_to_template',
-                             {'template': '500.html'}))
+                                TemplateView.as_view(template_name='500.html'))
+                        )

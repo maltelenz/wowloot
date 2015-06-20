@@ -14,11 +14,11 @@
   </head>
   <body>
     <div class="toplinks toplinks{% block toplinks %}{% endblock %}">
-      <a href="{% url home %}">Home</a>
-      <a href="{% url about %}">About</a>
+      <a href="{% url 'home' %}">Home</a>
+      <a href="{% url 'about' %}">About</a>
     </div>
     {% block contentwrapperstart %}{% endblock %}
-    <h1 class="firstpage"><a href="{% url home %}"><img src="{{ STATIC_URL }}images/logo.png" alt="icon" class="logo"/>WhoOwsWhat Loot</a></h1>
+    <h1 class="firstpage"><a href="{% url 'home' %}"><img src="{{ STATIC_URL }}images/logo.png" alt="icon" class="logo"/>WhoOwsWhat Loot</a></h1>
     <hr class="header"/>
 
     {% block content %}{% endblock %}
