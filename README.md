@@ -2,13 +2,23 @@ WhoOwsWhat Loot (wowloot)
 =========================
 Django project to figure out who ows what to whom.
 
-Install instructions
---------------------
+Getting started
+---------------
+
+0. Install Django: https://docs.djangoproject.com/en/1.9/intro/install/
 
 1. Copy settings-template.py to settings.py.
-2. Edit the path to where you want to store your database (in settings.py).
-3. Edit the path to where your templates are stored (in settings.py).
-
+2. In settings.py, edit the following:
+	* The path field in DATABASES to where you want to store your database file.
+	* TEMPLATE_DIRS to where your templates are stored (they are in this repository under 'templates').
+	* OPEN_EXCHANGE_APP_ID to the app id you get by signing up at https://openexchangerates.org/signup/free
+3. In a shell:
+```
+$ cd wowloot
+$ python manage.py migrate
+$ python manage.py update_currency
+$ python manage.py runserver
+```
 
 Dependencies
 ------------
