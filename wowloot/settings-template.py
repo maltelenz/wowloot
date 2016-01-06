@@ -108,7 +108,7 @@ ROOT_URLCONF = 'wowloot.urls'
 WSGI_APPLICATION = 'wowloot.wsgi.application'
 
 TEMPLATE_DIRS = (
-    "/path/to/repository/wowloot/templates"
+    "/path/to/repository/wowloot/templates",
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
