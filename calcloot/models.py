@@ -36,7 +36,8 @@ class Calculation(models.Model):
         return self.name + "(" + self.hashtag + ")"
     
     def code_hashtag(self):
-        return hashlib.md5(self.name).hexdigest()[:10]
+        # Need to replace all the non-ascii characters here, or md5 will throw error
+        return hashlib.md5(''.join([i if ord(i) < 128 else '?' for i in self.name])).hexdigest()[:10]
 
     def balance(self):
         owing_dict = {}
