@@ -1,32 +1,33 @@
 from django.conf.urls import patterns, include, url
 from django.views.generic import TemplateView
 
+from wowloot import settings
+
+import calcloot.views
+
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
-from wowloot import settings
 admin.autodiscover()
 
-urlpatterns = patterns('calcloot.views',
-    # Examples:
-    url(r'^$', 'home', name = 'home'),
-    url(r'^about/$', 'about', name = 'about'),
-    url(r'^person/a/(?P<calcid>\d+)/(?P<hashtag>\w+)/$', 'add_person', name = "add_person"),
-    url(r'^person/d/(?P<calcid>\d+)/(?P<hashtag>\w+)/(?P<personid>\d+)/$', 'delete_person', name = "delete_person"),
-    url(r'^currency/(?P<calcid>\d+)/(?P<hashtag>\w+)/$', 'change_currency', name = "change_currency"),
-    url(r'^calculation/(?P<calcid>\d+)/(?P<hashtag>\w+)/$', 'calculation', name = "calculation"),
-    url(r'^calculation/s/(?P<calcid>\d+)/(?P<hashtag>\w+)/$', 'calculation_share', name = "calculation_share"),
-    url(r'^calculation/d/(?P<calcid>\d+)/(?P<hashtag>\w+)/$', 'calculation_delete', name = "calculation_delete"),
-    url(r'^calculation/(?P<calcid>\d+)/(?P<hashtag>\w+)/(?P<edit_expense_id>\d+)/$', 'calculation', name = "expense_edit"),
-    url(r'^expense/d/(?P<calcid>\d+)/(?P<hashtag>\w+)/(?P<expenseid>\d+)/$', 'expense_delete', name = "expense_delete"),
-    url(r'^benefactor/d/(?P<calcid>\d+)/(?P<hashtag>\w+)/(?P<expenseid>\d+)/(?P<personid>\d+)/$', 'benefactor_delete', name = "benefactor_delete"),
-    url(r'^benefactor/a/(?P<calcid>\d+)/(?P<hashtag>\w+)/(?P<expenseid>\d+)/(?P<personid>\d+)/$', 'benefactor_add', name = "benefactor_add"),
-
-)
+urlpatterns = [
+    url(r'^$', calcloot.views.home, name = 'home'),
+    url(r'^about/$', calcloot.views.about, name = 'about'),
+    url(r'^person/a/(?P<calcid>\d+)/(?P<hashtag>\w+)/$', calcloot.views.add_person, name = "add_person"),
+    url(r'^person/d/(?P<calcid>\d+)/(?P<hashtag>\w+)/(?P<personid>\d+)/$', calcloot.views.delete_person, name = "delete_person"),
+    url(r'^currency/(?P<calcid>\d+)/(?P<hashtag>\w+)/$', calcloot.views.change_currency, name = "change_currency"),
+    url(r'^calculation/(?P<calcid>\d+)/(?P<hashtag>\w+)/$', calcloot.views.calculation, name = "calculation"),
+    url(r'^calculation/s/(?P<calcid>\d+)/(?P<hashtag>\w+)/$', calcloot.views.calculation_share, name = "calculation_share"),
+    url(r'^calculation/d/(?P<calcid>\d+)/(?P<hashtag>\w+)/$', calcloot.views.calculation_delete, name = "calculation_delete"),
+    url(r'^calculation/(?P<calcid>\d+)/(?P<hashtag>\w+)/(?P<edit_expense_id>\d+)/$', calcloot.views.calculation, name = "expense_edit"),
+    url(r'^expense/d/(?P<calcid>\d+)/(?P<hashtag>\w+)/(?P<expenseid>\d+)/$', calcloot.views.expense_delete, name = "expense_delete"),
+    url(r'^benefactor/d/(?P<calcid>\d+)/(?P<hashtag>\w+)/(?P<expenseid>\d+)/(?P<personid>\d+)/$', calcloot.views.benefactor_delete, name = "benefactor_delete"),
+    url(r'^benefactor/a/(?P<calcid>\d+)/(?P<hashtag>\w+)/(?P<expenseid>\d+)/(?P<personid>\d+)/$', calcloot.views.benefactor_add, name = "benefactor_add"),
+]
 
 if settings.DEBUG:
-    urlpatterns += patterns('',
-                            (r'^404/',
-                                TemplateView.as_view(template_name='404.html')),
-                            (r'^500/',
-                                TemplateView.as_view(template_name='500.html'))
-                        )
+    urlpatterns += [
+                        url(r'^404/',
+                            TemplateView.as_view(template_name='404.html')),
+                        url(r'^500/',
+                            TemplateView.as_view(template_name='500.html'))
+                        ]

@@ -24,7 +24,7 @@ Dependencies
 ------------
 ### Server side
 * Python
-* Django (1.4)
+* Django (1.9)
 
 ### External
 * http://openexchangerates.org/ (Documentation at http://openexchangerates.org/documentation/)
