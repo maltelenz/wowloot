@@ -61,8 +61,8 @@
       <div class="formerrors">{{ form.name.errors }}</div>
       {% endif %}
       <div>
-	<input id="id_name" type="text" name="name" maxlength="200" class="inputfirstpage watermarked" value="Name...">
-	<input type="submit" value="Start" class="firstpagesubmit"/>
+        <input id="id_name" type="text" name="name" maxlength="200" class="inputfirstpage watermarked" value="Name...">
+        <input type="submit" value="Start" class="firstpagesubmit"/>
       </div>
     </form>
   </div>
@@ -74,13 +74,13 @@
     {% for calculation in previous_calculations %}
     <tr>
       <td>
-	<a href="{% url 'calculation' calculation.id calculation.hashtag %}">{{ calculation.name }}</a>
+        <a href="{% url 'calculation' calculation.id calculation.hashtag %}">{{ calculation.name }}</a>
       </td>
       <td class="creationdate">
-	(Created {{ calculation.creation_date }})
+        (Created {{ calculation.creation_date }})
       </td>
       <td>
-	<a href="{% url 'calculation_delete' calculation.id calculation.hashtag %}"><img src="{{STATIC_URL}}images/cross.png" alt="Delete" /></a>
+        <a href="{% url 'calculation_delete' calculation.id calculation.hashtag %}"><img src="{{STATIC_URL}}images/cross.png" alt="Delete" /></a>
       </td>
     </tr>
     {% endfor %}
