@@ -270,7 +270,7 @@ div.stext {
     right: 100px;
 }
 
-a[explanationLink]:link, a[explanationLink]:visited
+[explanationLink]:link, [explanationLink]:visited
 {
     text-decoration: none;
     position: relative;
@@ -286,7 +286,12 @@ a[explanationLink]:link, a[explanationLink]:visited
     background:#6bb7f1;
 }
 
-a[explanationLink].withBubble:before
+[explanationLink]
+{
+    position: relative;
+}
+
+[explanationLink].withBubble:before
 {
     content: "";
     position: absolute;
@@ -297,7 +302,7 @@ a[explanationLink].withBubble:before
     left: -19px;
 }
 
-a[explanationLink].withBubble:after
+[explanationLink].withBubble:after
 {
     position: absolute;
     content: attr(explanationLink);
@@ -314,4 +319,26 @@ a[explanationLink].withBubble:after
     border-radius: 6px;
     border: 2px solid #000;
     box-shadow: 3px 3px 5px #888;
+}
+
+form[explanationLink].withBubble:before
+{
+    left: 0px;
+}
+
+form[explanationLink].withBubble:after
+{
+    left: 0px;
+}
+
+span[explanationLink].withBubble#expenses:before
+{
+    bottom: -33px;
+    left: 0px;
+}
+
+span[explanationLink].withBubble#expenses:after
+{
+    bottom: -45px;
+    left: 0px;
 }

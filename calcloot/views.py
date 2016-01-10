@@ -26,7 +26,7 @@ def home(request):
             #Set the expiration to 6 months in the future
             request.session.set_expiry(timedelta(30*6))
             #Redirect to the calculation page
-            return HttpResponseRedirect('/calculation/' + unicode(calculation.id) + '/' + calculation.hashtag + '/')
+            return HttpResponseRedirect('/calculation/' + unicode(calculation.id) + '/' + calculation.hashtag + '/?firstload')
     else:
         form = HomeForm() #create new empty form
     try:
@@ -118,6 +118,7 @@ def calculation(request, calcid, hashtag, edit_expense_id = None):
             'is_edit': is_edit,
             'transfers': transfers,
             'currencyform': currencyform,
+            'firstload': 'firstload' in request.GET
             },
                               context_instance = RequestContext(request))
 
