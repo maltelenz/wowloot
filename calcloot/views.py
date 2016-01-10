@@ -90,13 +90,16 @@ def calculation(request, calcid, hashtag, edit_expense_id = None):
     balance = calculation.balance()
 
     #Get the form for adding a person
+    #Build up a list of names from previous calculations that might be possible to use
     try:
         previous_calculations = Calculation.objects.filter(pk__in=request.session['calculations'])
     except KeyError:
         previous_calculations = []
     name_list = []
     for previous_c in previous_calculations:
-        name_list += previous_c.involved.all()
+        name_list += [str(p) for p in previous_c.involved.all()]
+    #Remove duplicates, and remove names already added to this calculation
+    name_list = set(name_list) - set([str(p) for p in calculation.involved.all()])
     addpersonform = AddPersonForm(data_list=name_list)
 
     #Get the form for changing currency
