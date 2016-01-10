@@ -8,6 +8,7 @@ class UnsavedForeignKey(models.ForeignKey):
 
 class Person(models.Model):
     name = models.CharField(max_length = 200)
+    finished = models.BooleanField(default = False)
 
     def __unicode__(self):
         return self.name

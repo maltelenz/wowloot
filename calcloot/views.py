@@ -141,6 +141,20 @@ def delete_person(request, calcid, hashtag, personid):
     calculation.involved.remove(person)
     return HttpResponseRedirect(reverse('calculation', args=[calcid, hashtag]))
 
+def finish_person(request, calcid, hashtag, personid):
+    calculation = get_object_or_404(Calculation, pk = calcid, hashtag = hashtag)
+    person = calculation.involved.get(pk = personid)
+    person.finished = True
+    person.save()
+    return HttpResponseRedirect(reverse('calculation', args=[calcid, hashtag]))
+
+def unfinish_person(request, calcid, hashtag, personid):
+    calculation = get_object_or_404(Calculation, pk = calcid, hashtag = hashtag)
+    person = calculation.involved.get(pk = personid)
+    person.finished = False
+    person.save()
+    return HttpResponseRedirect(reverse('calculation', args=[calcid, hashtag]))
+
 def change_currency(request, calcid, hashtag):
     calculation = get_object_or_404(Calculation, pk = calcid, hashtag = hashtag)
     if request.method == 'POST':

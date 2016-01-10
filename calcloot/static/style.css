@@ -188,6 +188,10 @@ h1.calculation {
     font-weight: bold;
 }
 
+.expensetable tr td.tabledone {
+    background: #80D65E;
+}
+
 .expensetable tr td.headernew,
 .expensetable tr td.tablenew {
     border: 1px dashed #777;
