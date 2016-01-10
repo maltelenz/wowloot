@@ -111,7 +111,8 @@ class Calculation(models.Model):
 
         return computed_transfers
         
-        
+    def is_finished(self):
+        return all([f.finished for f in self.involved.all()])
 
     def new_expense(self):
         try:

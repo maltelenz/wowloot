@@ -224,6 +224,10 @@ h1.calculation {
     font-family: verdana;
 }
 
+.solutionunfinished {
+    color: #888;
+}
+
 .personname {
     font-weight: bold;
 }
@@ -264,4 +268,50 @@ div.stext {
     position: absolute;
     top: 170px;
     right: 100px;
+}
+
+a[explanationLink]:link, a[explanationLink]:visited
+{
+    text-decoration: none;
+    position: relative;
+    margin-left: 5px;
+    width:16px;
+    height:16px;
+    border-radius:50%;
+    display: inline-block;
+    font-size:13px;
+    color:#fff;
+    line-height:16px;
+    text-align:center;
+    background:#6bb7f1;
+}
+
+a[explanationLink].withBubble:before
+{
+    content: "";
+    position: absolute;
+    border-bottom: 26px solid #000;
+    border-left: 26px solid transparent;
+    border-right: 26px solid transparent;
+    bottom: -28px;
+    left: -19px;
+}
+
+a[explanationLink].withBubble:after
+{
+    position: absolute;
+    content: attr(explanationLink);
+    font-weight:bold;
+    bottom: -40px;
+    left: -26px;
+    white-space: nowrap;
+    background: #666;
+    color: #FFFFFF;
+    padding: 5px 10px;
+    -moz-border-radius: 6px;
+    -webkit-border-radius:6px;
+    -khtml-border-radius:6px;
+    border-radius: 6px;
+    border: 2px solid #000;
+    box-shadow: 3px 3px 5px #888;
 }

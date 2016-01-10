@@ -2,6 +2,21 @@
 
 {% block title %} - {{ calculation.name }}{% endblock %}
 
+{% block inheader %}
+<script>
+  $(document).ready(function() {
+    $("a[explanationLink]").click(function() {
+      $(this).toggleClass('withBubble');
+      return false;
+    }).hover(function() {
+      $(this).addClass("withBubble");
+    }, function() {
+      $(this).removeClass("withBubble");
+    });
+  });
+</script>
+{% endblock%}
+
 {% block toplinks %}calculation{% endblock %}
 
 {% block contentwrapperstart %}
@@ -29,14 +44,15 @@
       <td class="header">Amount <span class="balancecurrency">[{{calculation.currency.name}}]</span></td>
       <td class="header">Name (optional)</td>
       {% for person in calculation.involved.all %}
-      <td class="header{% if person.finished %} tabledone{% endif %}">
-        {{ person.name }}
-        {% if person.finished %}
-        <a href="{% url 'unfinish_person' calculation.id calculation.hashtag person.id %}"><img src="{{STATIC_URL}}images/tick.png" alt="N" title="Mark not finished" /></a>
-        {% else %}
-        <a href="{% url 'finish_person' calculation.id calculation.hashtag person.id %}"><img src="{{STATIC_URL}}images/tick.png" alt="F" title="Mark finished" /></a>
-        {% endif %}
-        <a href="{% url 'delete_person' calculation.id calculation.hashtag person.id %}"><img src="{{STATIC_URL}}images/cross.png" alt="D" title="Remove" /></a>
+        <td class="header{% if person.finished %} tabledone{% endif %}">
+          {% if person.finished %}
+          <a href="{% url 'unfinish_person' calculation.id calculation.hashtag person.id %}" title="Mark not finished">
+          {% else %}
+          <a href="{% url 'finish_person' calculation.id calculation.hashtag person.id %}" title="Mark finished">
+          {% endif %}
+            {{ person.name }}
+          </a>
+          <a href="{% url 'delete_person' calculation.id calculation.hashtag person.id %}"><img src="{{STATIC_URL}}images/cross.png" alt="D" title="Remove" /></a>
       </td>
       {% endfor %}
       <td class="headernew">
@@ -126,9 +142,9 @@
       {% endfor %}
     </tr>
   </table>
-  <h3>Solution</h3>
+  <h3>Solution ({% if calculation.is_finished %}Finished{% else %}Not finished<a href="#" explanationLink="Mark when you are finished by clicking your name at the top of the list of expenses.">?</a>{% endif %})</h3>
   {% for from_person, to_person, amount in transfers %}
-  <div class="solutionrow"><span class="personname">{{ from_person }}</span> pays <span class="personname">{{ to_person }}</span> {{ amount|floatformat:2 }} {{ calculation.currency.name }}</div>
+  <div class="solutionrow{% if not calculation.is_finished %} solutionunfinished{% endif %}"><span class="personname">{{ from_person }}</span> pays <span class="personname">{{ to_person }}</span> {{ amount|floatformat:2 }} {{ calculation.currency.name }}</div>
   {% endfor %}
 
   {% endblock %}
