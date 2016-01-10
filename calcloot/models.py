@@ -13,6 +13,9 @@ class Person(models.Model):
     def __unicode__(self):
         return self.name
 
+    def __str__(self):
+        return ''.join([i if ord(i) < 128 else '?' for i in self.name])
+
 class Currency(models.Model):
     name = models.CharField(max_length = 5)
     rate = models.FloatField()
